@@ -1,31 +1,25 @@
+#!/bin/bash
+
 clear 
 
-echo "UDecrypter BOT Scripted by Mr.Den_Mar" 
+essid_prompt=$(tput setaf 5)$(tput bold)"Please tell me which Wi-Fi network the .cap file belongs to: "$(tput sgr0)
+cap_prompt=$(tput setaf 5)$(tput bold)"Please tell me the path to the .cap file you want to decrypt: "$(tput sgr0)
+wordlist_prompt=$(tput setaf 5)$(tput bold)"Please tell me the path to the wordlist file you want to use: "$(tput sgr0)
+starting_message=$(tput setaf 4)$(tput bold)"Starting up UDecrypter Bot...\n////////////////////////////////////\n"$(tput sgr0)
+decrypting_message=$(tput setaf 4)$(tput bold)"Starting decryption using Aircrack-NG...\n"$(tput sgr0)
+success_message=$(tput setaf 2)$(tput bold)"Hurray! Decryption successful! Check the key.txt file for the result. Have a great day in the world of Genshin!\n"$(tput sgr0)
 
-echo "Starting up UDecrypter Bot" 
-echo "//////////////////////////" 
+printf "$starting_message"
+printf "$(tput setaf 5)$(tput bold)Hello there, I am UDecrypter. Let's decrypt some Wi-Fi passwords in the world of Genshin!$(tput sgr0)\n"
 
-echo "Hello There i Am UDecrypter" 
+read -p "$cap_prompt" cap
+read -p "$wordlist_prompt" wordlist
+read -p "$essid_prompt" essid
 
-echo "Please Tell me Which .Cap file you want to Decrypt ?"  
-read -a cap
-sleep 1s
-echo "Ok, Now tell me which file did i use as a wordlist ?" 
+printf "$(tput setaf 5)$(tput bold)Great! Sit back and relax while I take care of the decryption process. But first, let's make sure your device is not overheating with all this Genshin magic going on!$(tput sgr0)\n"
 
-read -a wrdlst
-sleep 1s
-echo "Got it Now tell me what is the name of that WI-FI which is belongs to this cap file :" $cap 
-read -a essid
-sleep 1s
-echo "Ok Stay Back and Chill I will take care of that And Make Sure Your Hardware are not overheating !!" 
-
-echo "Starting Decryption in 5 seconds Using Aircrack-NG" 
-
+printf "$decrypting_message"
 touch key.txt
+aircrack-ng -e "$essid" -l key.txt -w "$wordlist" "$cap"
 
-echo "Starting!!" | pv -qL 10
-
-
-aircrack-ng -e $essid -l key.txt -w $wrdlst $cap
-
-echo "YAY Decryption Sucess check the key.txt for Result"
+printf "$success_message"
